@@ -1,29 +1,29 @@
-﻿@model  List<PetGrooming.Models.Species>  /*means this page needs the spacies data */
+﻿@model PetGrooming.Models.ViewModels.UpdatePet  /*means this page needs the spacies data */
 @{
     ViewBag.Title = "Update";
 }
 
 <h2>Update a Pet</h2>
 
-<form method="POST" action="/Pet/Update">
+<form method="POST" action="/Pet/Update/@Model.pet.PetID">
     <!-- TODO: format this nicely -->
-    <div><span>Name: @Model.PetName</span><input id="PetName" type="text" name="PetName" /></div>
+    <div><span>Pet Name: @Model.pet.PetName</span><input id="PetName" type="text" name="PetName" /></div>
     <div>
         <span>Species:</span>
         <select id="SpeciesID" type="text" name="SpeciesID">
             @{
                 //A rendering loop for presenting a list of species
                 //The pet should be one of these species
-                foreach (var species in Model)
+                foreach (var species in @Model)
                 {
-                    <option value="@species.SpeciesID">@species.Name</option>
+                    <option value="@species.SpeciesID">@species.SpeciesName</option>
 
                 }
             }
         </select>
     </div>
-    <div><span>Weight: @Model.Weight</span><input id="PetWeight" type="text" name="PetWeight" /></div>
-    <div><span>Color: @Model.Color</span><input id="PetColor" type="text" name="PetColor" /></div>
+    <div><span>Weight: @Model.pet.Weight</span><input id="PetWeight" type="text" name="PetWeight" /></div>
+    <div><span>Color: @Model.pet.Color</span><input id="PetColor" type="text" name="PetColor" /></div>
     <div>Notes:</div>
     <textarea id="PetNotes" name="PetNotes">
         @PetNotes

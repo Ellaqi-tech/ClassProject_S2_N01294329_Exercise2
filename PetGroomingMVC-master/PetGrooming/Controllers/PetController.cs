@@ -86,7 +86,7 @@ namespace PetGrooming.Controllers
             sqlparams[1] = new SqlParameter("@PetWeight", PetWeight);
             sqlparams[2] = new SqlParameter("@PetColor", PetColor);
             sqlparams[3] = new SqlParameter("@SpeciesID", SpeciesID);
-            sqlparams[4] = new SqlParameter("@PetNotes",PetNotes);
+            sqlparams[4] = new SqlParameter("@PetNotes",PetNotes); 
 
             //db.Database.ExecuteSqlCommand will run insert, update, delete statements
             //db.Pets.SqlCommand will run a select statement, for example.

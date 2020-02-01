@@ -1,8 +1,13 @@
-﻿@model  PetGrooming.Models.Species
+﻿@model PetGrooming.Models.Species
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Update";
 }
 
-    <h2>Edit</h2>
-    Species Name: @Model.Name
+<h2>Edit</h2>
+<form action="/Species/Edit/@Model.SpeciesID" method="post">
+    <label>Species Name: </label>
+    <input type="text" name="SpeciesName" id="SpeciesName" value="@Model.Name" />
+    <input type="submit" value="Update Species" />
+</form>
+

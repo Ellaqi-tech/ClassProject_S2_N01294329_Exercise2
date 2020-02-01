@@ -5,11 +5,11 @@
 }
 
 <h2>Show Pet</h2>
-
+<a href="/Pet/List">Back to list</a><br />
 <div>Name : @Model.PetName</div>
-<div>Weight : @Model.Weight</div>
+<div>Weight : @Model.Weight kg</div>
 <div>Species : @Model.Species.Name</div>
 <input type="button" onclick="window.location.href='/Pet/Update';" value="Update Pet">
-<input type="button" onclick="window.location.href='/Pet/Delete';" value="Delete this Pet">
+<input type="button" onclick="window.location.href='/Pet/Delete';" value="Remove this Pet">
 
 

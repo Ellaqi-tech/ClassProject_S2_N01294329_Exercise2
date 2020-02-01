@@ -225,6 +225,7 @@
     <Content Include="Views\Pet\Delete.cshtml" />
     <Content Include="Views\Species\Add.cshtml" />
     <Content Include="Views\Species\Edit.cshtml" />
+    <Content Include="Views\Species\Remove.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

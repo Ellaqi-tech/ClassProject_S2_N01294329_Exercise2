@@ -35,7 +35,7 @@ namespace PetGrooming.Controllers
 
         // Add
         [HttpPost]
-        public ActionResult Add(string Name)
+        public ActionResult Add(string SpeciesName)
         {
             //STEP 1: PULL DATA! The data is access as arguments to the method. Make sure the datatype is correct!
             //The variable name  MUST match the name attribute described in Views/Pet/Add.cshtml
@@ -47,7 +47,7 @@ namespace PetGrooming.Controllers
             string query = "insert into species (Name) values (@SpeciesName)";
      
             //each piece of information is a key and value pair
-            SqlParameter sqlparams = new SqlParameter("@SpeciesName", Name);
+            SqlParameter sqlparams = new SqlParameter("@SpeciesName", SpeciesName);
 
             //db.Database.ExecuteSqlCommand will run insert, update, delete statements
             //db.Pets.SqlCommand will run a select statement, for example.
@@ -111,15 +111,16 @@ namespace PetGrooming.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, string Name)
+        public ActionResult Edit(int id, string SpeciesName)
         {
-            string query = "UPDATE species SET Name=@Name WHERE species = @id";
+            string query = "UPDATE species SET Name=@SpeciesName WHERE species = @id";
             SqlParameter[] sqlparams = new SqlParameter[2]; //0,1,2,3,4 pieces of information to add
             //each piece of information is a key and value pair
-            sqlparams[0] = new SqlParameter("@Name", Name);
+            sqlparams[0] = new SqlParameter("@SpeciesName", SpeciesName);
             sqlparams[1] = new SqlParameter("@id", id);
 
             db.Database.ExecuteSqlCommand(query, sqlparams);
+
             return RedirectToAction("List");
         }
     }
