@@ -227,9 +227,13 @@
     <Content Include="Views\Species\Add.cshtml" />
     <Content Include="Views\Species\Edit.cshtml" />
     <Content Include="Views\Species\Remove.cshtml" />
+    <Content Include="Views\GroomService\List.cshtml" />
+    <Content Include="Views\GroomService\Add.cshtml" />
+    <Content Include="Views\GroomBooking\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Groomer\" />
     <Folder Include="Wireframes_ERD\" />
   </ItemGroup>
   <ItemGroup>

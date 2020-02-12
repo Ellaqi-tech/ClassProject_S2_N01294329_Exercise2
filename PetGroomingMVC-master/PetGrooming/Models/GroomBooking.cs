@@ -35,5 +35,7 @@ namespace PetGrooming.Models
         //Representing  the many in (one pet to many bookings)
         public int PetID { get; set; }
 
+        //groomservice as foreign key
+        public ICollection<GroomService> GroomServices { get; set; }
     }
 }
