@@ -1,1 +1,15 @@
-﻿
+﻿@model PetGrooming.Models.Species
+
+@{
+    ViewBag.Title = "Remove";
+}
+
+<h2>Do you want to remove this species from the list?</h2>
+<div>
+    <div>@Model.Name</div>
+    <!-- <div>Model.GroomService</div> -->
+</div>
+<form method="POST" action="/Species/Remove/@Model.SpeciesID">
+    <input type="submit" name="deletesubmit" value="Yes">
+    <input type="button" onclick="window.location.href='/Pet/List';" value="No">
+</form>

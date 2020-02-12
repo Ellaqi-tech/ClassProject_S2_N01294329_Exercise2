@@ -3,30 +3,46 @@
     ViewBag.Title = "Update";
 }
 
-<h2>Update a Pet</h2>
+    <h2>Edit @Model.pet.PetName</h2>
 
 <form method="POST" action="/Pet/Update/@Model.pet.PetID">
-    <!-- TODO: format this nicely -->
-    <div><span>Pet Name: @Model.pet.PetName</span><input id="PetName" type="text" name="PetName" /></div>
     <div>
-        <span>Species:</span>
-        <select id="SpeciesID" type="text" name="SpeciesID">
+        <label for="PetName">Pet Name: </label>
+        <input id="PetName" type="text" name="PetName" value="@Model.pet.PetName" />
+    </div>
+    <div>
+        <label for="SpeciesID">Species:</label>
+        <select type="text" id="SpeciesID" name="SpeciesID">
             @{
                 //A rendering loop for presenting a list of species
                 //The pet should be one of these species
-                foreach (var species in @Model)
+                foreach (var species in Model.species)
                 {
-                    <option value="@species.SpeciesID">@species.SpeciesName</option>
-
+                    if (@species.SpeciesID == Model.pet.SpeciesID)
+                    {
+                        <option value="@species.SpeciesID" selected>@species.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@species.SpeciesID">@species.Name</option>
+                    }
                 }
             }
         </select>
     </div>
-    <div><span>Weight: @Model.pet.Weight</span><input id="PetWeight" type="text" name="PetWeight" /></div>
-    <div><span>Color: @Model.pet.Color</span><input id="PetColor" type="text" name="PetColor" /></div>
-    <div>Notes:</div>
-    <textarea id="PetNotes" name="PetNotes">
-        @PetNotes
-    </textarea>
+    <div>
+        <label for="PetWeight">Weight:</label>
+        <input id="PetWeight" type="text" name="PetWeight" value=@Model.pet.Weight />
+    </div>
+    <div>
+        <span>Color: </span>
+        <input id="PetColor" type="text" name="PetColor" value="@Model.pet.Color" />
+    </div>
+    <div>
+        <label for="PetNotes">Notes:</label>
+        <textarea id="PetNotes" name="PetNotes">
+            @Model.pet.Notes
+        </textarea>
+    </div>
     <input type="submit" value="Update Pet">
 </form>

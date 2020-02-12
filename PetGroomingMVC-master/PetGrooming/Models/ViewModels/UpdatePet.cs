@@ -7,6 +7,7 @@ namespace PetGrooming.Models.ViewModels
 {
     public class UpdatePet
     {
-
+        public Pet pet { get; set; }
+        public List<Species> species { get; set; }
     }
 }

@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.Mvc;
 using PetGrooming.Data;
 using PetGrooming.Models;
+//add this line:
+using PetGrooming.Models.ViewModels;
 using System.Diagnostics;
 
 namespace PetGrooming.Controllers
@@ -52,14 +54,14 @@ namespace PetGrooming.Controllers
         }
 
         // GET: Pet/Details/5
-        public ActionResult Show(int? id) //?: id con't be null
+        public ActionResult Show(int? id) //?: id can't be null
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             // Pet pet = db.Pets.Find(id); //EF 6 technique
-            Pet pet = db.Pets.SqlQuery("select * from pets where petid=@PetID", new SqlParameter("@PetID",id)).FirstOrDefault();
+            Pet pet = db.Pets.SqlQuery("select * from pets where PetID=@PetID", new SqlParameter("@PetID",id)).FirstOrDefault();
             if (pet == null)
             {
                 return HttpNotFound();
@@ -70,7 +72,7 @@ namespace PetGrooming.Controllers
         //THE [HttpPost] Means that this method will only be activated on a POST form submit to the following URL
         //URL: /Pet/Add
         [HttpPost]
-        public ActionResult Add(string PetName, Double PetWeight, String PetColor, int SpeciesID, string PetNotes)
+        public ActionResult Add(string PetName, double PetWeight, string PetColor, int SpeciesID, string PetNotes)
         {
             //STEP 1: PULL DATA! The data is access as arguments to the method. Make sure the datatype is correct!
             //The variable name  MUST match the name attribute described in Views/Pet/Add.cshtml
@@ -91,14 +93,13 @@ namespace PetGrooming.Controllers
             //db.Database.ExecuteSqlCommand will run insert, update, delete statements
             //db.Pets.SqlCommand will run a select statement, for example.
             db.Database.ExecuteSqlCommand(query, sqlparams);
-
             
             //run the list method to return to a list of pets so we can see our new one!
             return RedirectToAction("List"); //or "Pets/List"
         }
 
 
-        public ActionResult Add()  //must same with file name Add.cshtml
+        public ActionResult New()  //must same with file name Add.cshtml
         {
             //STEP 1: PUSH DATA!
             //What data does the Add.cshtml page need to display the interface?
@@ -106,79 +107,68 @@ namespace PetGrooming.Controllers
 
             //alternative way of writing SQL -- will learn more about this week 4
             //List<Species> Species = db.Species.ToList();
-
             List<Species> species = db.Species.SqlQuery("select * from Species").ToList();
-
+            
             return View(species);
         }
 
-        //TODO:
         //Update
-        //[HttpPost] Update
         [HttpPost]
-        public ActionResult Update(int? id)
+        public ActionResult Update(int id, string PetName, double PetWeight, string PetColor, string PetNotes)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            //STEP 1: PULL DATA! The data is access as arguments to the method. Make sure the datatype is correct!
-            //The variable name  MUST match the name attribute described in Views/Pet/Update.cshtml
-            
-            Pet pet = db.Pets.SqlQuery("select * from pets where petid=@PetID", new SqlParameter("@PetID", id)).FirstOrDefault();
+            Debug.WriteLine("Trying to update " + PetName);
 
-            //Tests are very useul to determining if you are pulling data correctly!
-            //Debug.WriteLine("Want to create a pet with name " + PetName + " and weight " + PetWeight.ToString()) ;
+            string query = "UPDATE pets SET PetName = @PetName, Weight = @PetWeight, color = @PetColor, Notes = @PetNotes WHERE PetID=@id;";
+            SqlParameter[] sqlparams = new SqlParameter[5];
+            sqlparams[0] = new SqlParameter("@id", id);
+            sqlparams[1] = new SqlParameter("@PetName", PetName);
+            sqlparams[2] = new SqlParameter("@PetWeight", PetWeight);
+            sqlparams[3] = new SqlParameter("@PetColor", PetColor);
+            sqlparams[4] = new SqlParameter("@PetNotes", PetNotes);
 
-            //STEP 2: FORMAT QUERY! the query will look something like "insert into () values ()"...
-            string query = "UPDATE pets SET PetName = @PetName, Weight = @PetWeight, color = @PetColor, SpeciesID = @SpeciesID, Notes = @PetNotes WHERE petid=@PetID;";
-            //SqlParameter[] sqlparams = new SqlParameter[5]; //0,1,2,3,4 pieces of information to add
-            //each piece of information is a key and value pair
-            //sqlparams[0] = new SqlParameter("@PetName", PetName);
-            //sqlparams[1] = new SqlParameter("@PetWeight", PetWeight);
-            //sqlparams[2] = new SqlParameter("@PetColor", PetColor);
-            //sqlparams[3] = new SqlParameter("@SpeciesID", SpeciesID);
-            //sqlparams[4] = new SqlParameter("@PetNotes", PetNotes);
+            db.Database.ExecuteSqlCommand(query, sqlparams);
 
-            //db.Database.ExecuteSqlCommand will run insert, update, delete statements
-            //db.Pets.SqlCommand will run a select statement, for example.
-            //db.Database.ExecuteSqlCommand(query, sqlparams);
-
-            //run the list method to return to a list of pets so we can see our new one!
             return RedirectToAction("List"); //or "Pets/List"
         }
 
 
-        public ActionResult Update()  //must same with file name Update.cshtml
+        public ActionResult Update(int id)  //must same with file name Update.cshtml
         {
-            //STEP 1: PUSH DATA!
-            //What data does the Add.cshtml page need to display the interface?
-            //A list of species to choose for a pet
+            Pet selectedpet = db.Pets.SqlQuery("SELECT * FROM pets WHERE PetID = @id", new SqlParameter("@id", id)).FirstOrDefault();
 
-            //alternative way of writing SQL -- will learn more about this week 4
-            //List<Species> Species = db.Species.ToList();
+            List<Species>selectedspecies = db.Species.SqlQuery("select * from Species").ToList();
 
-            List<Species> species = db.Species.SqlQuery("select * from Species").ToList();
+            UpdatePet updatepet = new UpdatePet();
 
-            return View(species);
+            updatepet.pet = selectedpet;
+            updatepet.species = selectedspecies;
+
+            return View(updatepet);
         }
 
-        //[HttpPost] Delete
-        //(optional) Delete
+        //Delete:
         [HttpPost]
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int id, string PetName, string DeleteSubmit)
         {
-            if (id == null)
+            Debug.WriteLine("Trying to delete " + PetName);
+
+            string query = "DELETE FROM pets WHERE PetID = @id";
+            SqlParameter[] sqlParams = new SqlParameter[1];
+
+            sqlParams[0] = new SqlParameter("@id", id);
+            if(DeleteSubmit == "Yes")
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                db.Database.ExecuteSqlCommand(query, sqlParams);
             }
-            // Pet pet = db.Pets.Find(id); //EF 6 technique
-            Pet pet = db.Pets.SqlQuery("select * from pets where petid=@PetID", new SqlParameter("@PetID", id)).FirstOrDefault();
-            if (pet == null)
-            {
-                return HttpNotFound();
-            }
-            return View(pet);
+            return RedirectToAction("List");
+           
+        }
+
+        public ActionResult Delete(int id)  //why not (int? id)?????????
+        {
+            Pet selectedpet = db.Pets.SqlQuery("SELECT * FROM pets WHERE petid = @id", new SqlParameter("@id", id)).FirstOrDefault();
+           
+            return View(selectedpet);
         }
 
 

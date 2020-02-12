@@ -11,10 +11,10 @@
     <div>
         <span>Species:</span>
         <select id="SpeciesID" type="text" name="SpeciesID">
-            @{ 
+            @{
                 //A rendering loop for presenting a list of species
                 //The pet should be one of these species
-                foreach(var species in Model)
+                foreach (var species in Model)
                 {
                     <option value="@species.SpeciesID">@species.Name</option>
 
@@ -28,5 +28,8 @@
     <textarea id="PetNotes" name="PetNotes">
 
     </textarea>
+    <!-- <div>Model.Owner</div> -->
+    <!-- <div>Model.Groomer</div> -->
+    <!-- <div>Model.GroomService</div> -->
     <input type="submit" value="Add Pet">
 </form>

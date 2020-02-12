@@ -4,8 +4,17 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Do you want to delete this pet from the list?</h2>
-<form method="POST" action="/Pet/Delete">
-    <input type="submit" value="Yes">
+<h2>Do you want to remove this pet from the list?</h2>
+<div>
+    <div>@Model.PetName</div>
+    <div>@Model.Weight</div>
+    <div>@Model.Species.Name</div>
+    <div>@Model.Notes</div>
+    <!-- <div>Model.Owner</div> -->
+    <!-- <div>Model.Groomer</div> -->
+    <!-- <div>Model.GroomService</div> -->
+</div>
+<form method="POST" action="/Pet/Delete/@Model.PetID">
+    <input type="submit" name="deletesubmit" value="Yes">
     <input type="button" onclick="window.location.href='/Pet/List';" value="No">
 </form>
