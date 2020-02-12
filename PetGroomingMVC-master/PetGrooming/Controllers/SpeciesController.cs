@@ -20,7 +20,7 @@ namespace PetGrooming.Controllers
         private PetGroomingContext db = new PetGroomingContext();
 
         // GET: Species
-        public ActionResult Index() //??????????????
+        public ActionResult Index() //?
         {
             return View();
         }
@@ -42,7 +42,6 @@ namespace PetGrooming.Controllers
             //each piece of information is a key and value pair
             SqlParameter sqlparams = new SqlParameter("@SpeciesName", SpeciesName);
 
-            //db.Pets.SqlCommand will run a select statement, for example.
             //run query
             db.Database.ExecuteSqlCommand(query, sqlparams);
 
@@ -56,13 +55,14 @@ namespace PetGrooming.Controllers
             return View(species);
         }
 
+        //Show
         public ActionResult Show(int id)
         {
             string query = "SELECT * FROM species WHERE speciesid = @id";
 
             SqlParameter sqlparam = new SqlParameter("@id", id);
 
-            Species selectedspecies = db.Species.SqlQuery(query, sqlparam).FirstOrDefault(); //only take the first item of the result
+            Species selectedspecies = db.Species.SqlQuery(query, sqlparam).FirstOrDefault(); 
 
             return View(selectedspecies);
         }
@@ -74,7 +74,7 @@ namespace PetGrooming.Controllers
             Debug.WriteLine("Trying to edit the species " + id);
 
             string query = "UPDATE species SET Name=@SpeciesName WHERE SpeciesID = @id";
-            SqlParameter[] sqlparams = new SqlParameter[2]; //0,1,2,3,4 pieces of information to add
+            SqlParameter[] sqlparams = new SqlParameter[2]; 
             //each piece of information is a key and value pair
             sqlparams[0] = new SqlParameter("@SpeciesName", SpeciesName); //add all parameters here
             sqlparams[1] = new SqlParameter("@id", id);
@@ -89,12 +89,12 @@ namespace PetGrooming.Controllers
 
             SqlParameter sqlparam = new SqlParameter("@id", id);
 
-            Species selectedspecies = db.Species.SqlQuery(query, new SqlParameter("@id", id)).FirstOrDefault(); //only take the first item of the result(defult is result set), the system doesn't know there only be one result will show
+            Species selectedspecies = db.Species.SqlQuery(query, new SqlParameter("@id", id)).FirstOrDefault(); 
 
             return View(selectedspecies);
         }
 
-        // delete
+        // Delete
         [HttpPost] //the method to grab the data from the form
         public ActionResult Remove(int id, string deletesubmit) //must same with the Show id!!!
         {
@@ -117,7 +117,7 @@ namespace PetGrooming.Controllers
 
             SqlParameter sqlparam = new SqlParameter("@id", id);
 
-            Species selectedspecies = db.Species.SqlQuery(query, new SqlParameter("@id", id)).FirstOrDefault(); //o
+            Species selectedspecies = db.Species.SqlQuery(query, new SqlParameter("@id", id)).FirstOrDefault(); 
 
             return View(selectedspecies);
         }
